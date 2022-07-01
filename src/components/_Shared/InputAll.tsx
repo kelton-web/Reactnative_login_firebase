@@ -20,13 +20,13 @@ const InputAll: React.FC<InputType> = ({error = false, errorDetails,...props}) =
           borderColor: 'red',
           height: 50,
           width: '80%',
-          padding: 20,
+          paddingHorizontal: 20,
           borderRadius: 7} : {borderWidth: 1,
             backgroundColor: '#FFFFFF',
             borderColor: 'gray',
             height: 50,
             width: '80%',
-            padding: 20,
+            paddingHorizontal: 20,
             borderRadius: 7}}
       />
       {!!errorDetails && (

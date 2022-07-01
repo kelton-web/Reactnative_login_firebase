@@ -1,33 +1,19 @@
 import React from "react";
 import { ImageBackground, StyleSheet, Text, View } from 'react-native';
-import * as Yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormValuesSignUp } from '../types/Types';
 import InputAll from "../components/_Shared/InputAll";
 import ButtonSubmit from '../components/_Shared/ButtonSubmit';
-import auth from "@react-native-firebase/auth";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { NavigateParams } from "../types/Types";
+import { CreateUserBase } from "../firebase/Auth";
+import { validationSchema } from "../yup/verify";
 
 const SignUp = () => {
 
 const navigation = useNavigation<NativeStackNavigationProp<NavigateParams>>();
-
-  const validationSchema = Yup.object({
-    firstName: Yup.string().required("Veuillez saisir votre prénom"),
-    lastName: Yup.string().required("Veuillez saisir votre nom"),
-    email: Yup.string()
-      .email("Veuillez saisir une adresse mail valide")
-      .required("Veuillez saisir une adresse mail"),
-    password: Yup.string()
-      .min(6, "Veuillez saisir au moins 6 caractères")
-      .required("Veuillez saisir un mot de passe"),
-    confirmPassword: Yup.string()
-      .required("Veuillez confirmer votre mot de passe")
-      .oneOf([Yup.ref("password")], "Les mots de passe ne correspondent pas"),
-  }).required();
 
   const {control, clearErrors, handleSubmit, formState: {errors}} = useForm<FormValuesSignUp>({
     resolver: yupResolver(validationSchema),
@@ -38,25 +24,7 @@ const navigation = useNavigation<NativeStackNavigationProp<NavigateParams>>();
     const HandlePressSubmit = (value: FormValuesSignUp) => {
     clearErrors();
     console.log("Press Submit");
-    
-    auth()
-      .createUserWithEmailAndPassword(value.email, value.password)
-      .then(() => {
-        console.log('User account created & signed in!');
-        navigation.navigate('Home');
-      })
-      .catch(error => {
-        if (error.code === 'auth/email-already-in-use') {
-          console.log('That email address is already in use!');
-        }
-
-        if (error.code === 'auth/invalid-email') {
-          console.log('That email address is invalid!');
-        }
-
-        console.error(error);
-      });
-    
+    CreateUserBase(value, navigation)
   }
    
   return (
@@ -91,7 +59,7 @@ const navigation = useNavigation<NativeStackNavigationProp<NavigateParams>>();
               </View>
             </View>
               {errors && Object.keys(errors).length > 0 && <Text style={{color: 'red', textAlign: 'center', paddingBottom: 4}}>Veuillez remplir tout les champs obligatoire </Text>}
-            <ButtonSubmit onPress={handleSubmit((value) => HandlePressSubmit(value))} title="Créer un compte"/>
+            <ButtonSubmit onPress={handleSubmit((value) => HandlePressSubmit(value))} title="Créer un compte" style={styles.buttonStyle} textStyle={styles.textStyle}/>
           </View>
         </ImageBackground>
          
@@ -129,5 +97,16 @@ const styles = StyleSheet.create({
   },
   inputContainStyle: {
     paddingBottom: "5%",
+  },
+  buttonStyle: {
+    height: 50,
+    width: "80%",
+    backgroundColor: "rgba(38, 222, 129,1.0)",
+    borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  textStyle: {
+      fontSize: 20
   }
 })

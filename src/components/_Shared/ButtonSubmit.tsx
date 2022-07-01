@@ -2,15 +2,18 @@ import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import React from 'react'
 
 interface ButtonType {
-onPress: () => void,
-title: string,
+    onPress: () => void,
+    title: string,
+    style: any,
+    textStyle: any,
+
 }
 
-const ButtonSubmit: React.FC<ButtonType> = ({onPress, title}) => {
+const ButtonSubmit: React.FC<ButtonType> = ({onPress, title, style, textStyle}) => {
   return (
     <View style={styles.container}>
-        <TouchableOpacity onPress={onPress} style={styles.buttonStyle}>
-            <Text style={styles.textStyle}>{title}</Text>
+        <TouchableOpacity onPress={onPress} style={style}>
+            <Text style={textStyle}>{title}</Text>
         </TouchableOpacity>
     </View>
   )
