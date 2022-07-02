@@ -1,7 +1,9 @@
 /* ********************************* Type de la navigation ******************************** */
 export type NavigateParams = {
     Home: undefined,
-    Login: undefined,
+    Login: {
+        email: string,
+    },
     SignUp: undefined,
     SecondSignUp: undefined,
     ForgotPassword: undefined,

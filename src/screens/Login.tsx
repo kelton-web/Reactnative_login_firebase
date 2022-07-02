@@ -12,6 +12,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { NavigateParams } from "../types/Types";
 import { CreateUserBase, LoginUserBase } from '../firebase/Auth';
 import InputAll from '../components/_Shared/InputAll';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
 
@@ -37,14 +38,13 @@ const Login = () => {
         <View style={styles.smallContainer}>
           <View style={styles.inputContainStyle}>
             <Controller control={control} name="email" render={({field: {onChange, value, onBlur}, fieldState: {error}}) => (
-                <InputAll value={value} placeholder="Email" onChangeText={onChange} error={!!error} errorDetails={error?.message} onBlur={onBlur}/>
+                <InputAll value={value} placeholder="Email" type="email" onChangeText={onChange} error={!!error} errorDetails={error?.message} onBlur={onBlur}/>
             )} />
           </View>
           <View style={styles.inputContainStyle}>
             <Controller control={control} name="password" render={({field: {onChange, value, onBlur}, fieldState: {error}}) => (
-                <InputAll value={value} placeholder="Mot de passe" onChangeText={onChange} error={!!error} errorDetails={error?.message} onBlur={onBlur}/>
+                <InputAll value={value} placeholder="Mot de passe" type="password" onChangeText={onChange} error={!!error} errorDetails={error?.message} onBlur={onBlur}/>
             )} />
-            
           </View>
           <View style={styles.submitButtonStyle}>
             <ButtonSubmit title="Connexion" onPress={handleSubmit((value) => submitButtonLogin(value))} style={styles.buttonStyle} textStyle={styles.textStyle} />
@@ -76,7 +76,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   inputContainStyle: {
-    paddingBottom: "2%",
+    marginBottom: 8,
+    width: "100%",
+    justifyContent: "center",
   },
   submitButtonStyle: {
     paddingTop: '3%',

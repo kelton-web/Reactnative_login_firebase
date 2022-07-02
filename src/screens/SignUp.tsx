@@ -33,30 +33,22 @@ const navigation = useNavigation<NativeStackNavigationProp<NavigateParams>>();
           <View style={styles.blurStyle}>
             <View style={styles.smallContain}>
               <View style={styles.inputContainStyle}>
-                <Controller control={control} name="firstName" render={({field: {onChange, value, onBlur}, fieldState: {error}}) => (
-                  <InputAll value={value} placeholder="Prénom" onChangeText={onChange} error={!!error} errorDetails={error?.message} onBlur={onBlur}/>
-                )} />
-              </View>
-              <View style={styles.inputContainStyle}>
-                <Controller control={control} name="lastName" render={({field: {onChange, value, onBlur}, fieldState: {error}}) => (
-                  <InputAll value={value} placeholder="Nom" onChangeText={onChange} error={!!error} errorDetails={error?.message} onBlur={onBlur}/>
-                )} />
-              </View>
-              <View style={styles.inputContainStyle}>
                 <Controller control={control} name="email" render={({field: {onChange, value, onBlur}, fieldState: {error}}) => (
-                  <InputAll value={value} placeholder="Email" onChangeText={onChange} error={!!error} errorDetails={error?.message} onBlur={onBlur}/>
+                  <InputAll value={value} placeholder="Email" type="email" onChangeText={onChange} error={!!error} errorDetails={error?.message} onBlur={onBlur}/>
                 )} />
               </View>
               <View style={styles.inputContainStyle}>
                 <Controller control={control} name="password" render={({field: {onChange, value, onBlur}, fieldState: {error}}) => (
-                  <InputAll value={value} placeholder="Mot de passe" onChangeText={onChange} error={!!error} errorDetails={error?.message} onBlur={onBlur}/>
+                  <InputAll value={value} placeholder="Mot de passe" type="password" onChangeText={onChange} error={!!error} errorDetails={error?.message} onBlur={onBlur}/>
                 )} />
               </View>
               <View style={styles.inputContainStyle}>
                 <Controller control={control} name="confirmPassword" render={({field: {onChange, value, onBlur}, fieldState: {error}}) => (
-                  <InputAll value={value} placeholder="Confimer votre mot de passe" onChangeText={onChange} error={!!error} errorDetails={error?.message} onBlur={onBlur}/>
+                  <InputAll value={value} placeholder="Confimer votre mot de passe" type="password" onChangeText={onChange} error={!!error} errorDetails={error?.message} onBlur={onBlur}/>
                 )} />
+                
               </View>
+              
             </View>
               {errors && Object.keys(errors).length > 0 && <Text style={{color: 'red', textAlign: 'center', paddingBottom: 4}}>Veuillez remplir tout les champs obligatoire </Text>}
             <ButtonSubmit onPress={handleSubmit((value) => HandlePressSubmit(value))} title="Créer un compte" style={styles.buttonStyle} textStyle={styles.textStyle}/>

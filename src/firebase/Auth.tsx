@@ -8,7 +8,7 @@ export const CreateUserBase = (value: FormValuesSignUp, navigation: any) => {
       .createUserWithEmailAndPassword(value.email, value.password)
       .then(() => {
         console.log('User account created & signed in!');
-        navigation.navigate('Login');
+        navigation.navigate('Login', {email: value.email});
       })
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {
@@ -27,7 +27,7 @@ export const LoginUserBase = (value: FormValuesSignUp, navigation: any) => {
       .signInWithEmailAndPassword(value.email, value.password)
       .then(() => {
         console.log('signed in!');
-        navigation.navigate('Home');
+        navigation.navigate('Home',{email: value.email});
       })
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {
@@ -40,4 +40,14 @@ export const LoginUserBase = (value: FormValuesSignUp, navigation: any) => {
 
         console.error(error);
       });
+}
+
+
+export const SignOut = (navigation: any) => {
+  auth()
+  .signOut()
+  .then(() => {
+    console.log('User signed out!')
+    navigation.navigate('Login')
+  });
 }
