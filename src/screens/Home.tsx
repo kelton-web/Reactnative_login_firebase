@@ -1,6 +1,6 @@
 
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
-import { SignOut } from '../firebase/Auth';
+import { SignOut, CreateDataFirestore } from '../firebase/Auth';
 import React from "react";
 import { ImageBackground, StyleSheet, Text, View } from 'react-native';
 import { useForm, Controller } from "react-hook-form";
@@ -11,7 +11,8 @@ import ButtonSubmit from '../components/_Shared/ButtonSubmit';
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { NavigateParams } from "../types/Types";
 import { CreateUserBase } from "../firebase/Auth";
-import { validationSchema } from "../yup/verify";
+import { validationSchemaHome } from "../yup/verify";
+
 
 const SignUp = () => {
 
@@ -20,7 +21,7 @@ const route = useRoute<RouteProp<NavigateParams>>();
 
 
   const {control, clearErrors, handleSubmit, formState: {errors}} = useForm<FormValuesSignUp>({
-    resolver: yupResolver(validationSchema),
+    resolver: yupResolver(validationSchemaHome),
     mode: 'onSubmit',
   })
 
@@ -28,7 +29,7 @@ const route = useRoute<RouteProp<NavigateParams>>();
     const HandlePressSubmit = (value: FormValuesSignUp) => {
     clearErrors();
     console.log("Press Submit");
-    CreateUserBase(value, navigation)
+    CreateDataFirestore(value, navigation)
   }
    
   return (
@@ -66,7 +67,6 @@ const route = useRoute<RouteProp<NavigateParams>>();
                 )} />
                 
               </View>
-              
             </View>
               {errors && Object.keys(errors).length > 0 && <Text style={{color: 'red', textAlign: 'center', paddingBottom: 4}}>Veuillez remplir tout les champs obligatoire </Text>}
             <ButtonSubmit onPress={handleSubmit((value) => HandlePressSubmit(value))} title="Créer un compte" style={styles.buttonStyle} textStyle={styles.textStyle}/>
@@ -97,16 +97,16 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderColor: "rgba(99, 110, 114,1.0)",
     backgroundColor: "rgba(93, 103, 100, 0.5)",
-    marginBottom: "10%",
     height: "70%",
-    width: "95%",
-    borderRadius: 10,
+    width: "100%",
+    borderTopEndRadius: 20,
+    borderTopStartRadius: 20,
   },
   smallContain: {
     marginTop: 20,
   },
   inputContainStyle: {
-    paddingBottom: "5%",
+    paddingBottom: "2%",
   },
   buttonStyle: {
     height: 50,

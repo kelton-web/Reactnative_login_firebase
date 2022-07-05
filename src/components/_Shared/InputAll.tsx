@@ -47,7 +47,7 @@ const [isVisible, SetIsVisible] = useState<boolean>(type !== "password")
       ) }
      {type === "password" &&
             <View style={{position: 'absolute',right: 50}}>
-               {isVisible ? <Ionicons name='eye-off' size={28} color='green' onPress={isVisibleFunction} />: <Ionicons name='eye' size={29} color='green' onPress={isVisibleFunction} />}
+               {isVisible ? <Text><Ionicons name='eye-off' size={28} color='green' onPress={isVisibleFunction} /></Text> : <Text><Ionicons name='eye' size={29} color='green' onPress={isVisibleFunction} /></Text>}
             </View>
       }
     </View>
