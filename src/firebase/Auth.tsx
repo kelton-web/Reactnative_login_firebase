@@ -35,14 +35,18 @@ export const CreateUserBase = (value: FormValuesSignUp, navigation: any) => {
 
 export const CreateDataFirestore = (value: FormValuesSignUp, navigation: any) => {
   // Add a new document in collection "cities"
+  const user = auth().currentUser;
    console.log(
       value.firstName + '\n' +
       value.lastName + '\n' +
       value.email + '\n' +
       value.password,
     );
+    if(user) {
   firestore()
   .collection('Users')
+  .doc(user.uid)
+  .collection('compte')
   .add({
     firstName: value.firstName, 
     lastName: value.lastName,
@@ -51,13 +55,14 @@ export const CreateDataFirestore = (value: FormValuesSignUp, navigation: any) =>
   })
   .then(() => {
     console.log('User added!');
+    navigation.navigate('Home'); 
   }).catch(error => {
       console.log('That database echoue!');
     
 
     console.error(error);
   });
-      
+  }
 }
 
 /* ********* login ****************/
@@ -90,5 +95,19 @@ export const SignOut = (navigation: any) => {
   .then(() => {
     console.log('User signed out!')
     navigation.navigate('Login')
+  });
+}
+/* ********* get firestore ****************/
+
+export const getAllFirestore = () => {
+  firestore()
+  .collection('Users')
+  .get()
+  .then(querySnapshot => {
+    console.log('Total users: ', querySnapshot.size);
+
+    querySnapshot.forEach(documentSnapshot => {
+      console.log('User ID: ', documentSnapshot.id, documentSnapshot.data());
+    });
   });
 }
