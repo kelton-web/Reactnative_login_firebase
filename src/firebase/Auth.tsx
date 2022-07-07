@@ -72,7 +72,8 @@ export const LoginUserBase = (value: FormValuesSignUp, navigation: any) => {
       .signInWithEmailAndPassword(value.email, value.password)
       .then(() => {
         console.log('signed in!');
-        navigation.navigate('Home',{email: value.email});
+        navigation.replace('Home',{email: value.email});
+
       })
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {
@@ -94,7 +95,7 @@ export const SignOut = (navigation: any) => {
   .signOut()
   .then(() => {
     console.log('User signed out!')
-    navigation.navigate('Login')
+    navigation.replace('Login')
   });
 }
 /* ********* get firestore ****************/

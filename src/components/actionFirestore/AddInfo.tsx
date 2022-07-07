@@ -39,12 +39,12 @@ const route = useRoute<RouteProp<NavigateParams>>();
             <View style={styles.smallContain}>
               <View style={styles.inputContainStyle}>
                 <Controller control={control} name="firstName" render={({field: {onChange, value, onBlur}, fieldState: {error}}) => (
-                  <InputAll value={value} placeholder="Prénom" type="text" onChangeText={onChange} error={!!error} errorDetails={error?.message} onBlur={onBlur}/>
+                  <InputAll value={value} placeholder="Username" type="text" onChangeText={onChange} error={!!error} errorDetails={error?.message} onBlur={onBlur}/>
                 )} />
               </View>
               <View style={styles.inputContainStyle}>
                 <Controller control={control} name="lastName" render={({field: {onChange, value, onBlur}, fieldState: {error}}) => (
-                  <InputAll value={value} placeholder="Nom" type="text" onChangeText={onChange} error={!!error} errorDetails={error?.message} onBlur={onBlur}/>
+                  <InputAll value={value} placeholder="Platform" type="text" onChangeText={onChange} error={!!error} errorDetails={error?.message} onBlur={onBlur}/>
                 )} />
               </View>
               <View style={styles.inputContainStyle}>

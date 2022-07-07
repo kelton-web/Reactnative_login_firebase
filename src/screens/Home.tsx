@@ -18,9 +18,6 @@ import auth from '@react-native-firebase/auth';
 import ListItem from '../components/tasks/ListItem';
 import ModalUpdate from '../components/actionFirestore/ModalUpdate';
 
-
-const Home = () => {
-
 interface datafirestoreType {
     firstname: string;
     lastname: string;
@@ -29,6 +26,9 @@ interface datafirestoreType {
     key: any;
 }
 
+const Home = () => {
+
+
 const navigation = useNavigation<NativeStackNavigationProp<NavigateParams>>();
 const route = useRoute<RouteProp<NavigateParams>>();
 
@@ -36,39 +36,38 @@ const [userData, setUserData] = useState<datafirestoreType[]>([]);
 const LookFacebook = () => {
   navigation.push('AddInfo');
 };
-const user = auth().currentUser;
+const user = auth().currentUser?.uid;
 
 useEffect(() => {
-  if(user) {
-    firestore()
-    .collection('Users')
-    .doc(user.uid)
-    .collection('compte')
-    .onSnapshot((querySnapshot) => {
 
-      console.log('Total users: ', querySnapshot.size);
-  
+    const dataFirebase = firestore()
+    .collection('Users')
+    .doc(user)
+    .collection('compte')
+    .onSnapshot((querySnapshot) => {  
       const userInfoAll: datafirestoreType[] = [];
-  
-      querySnapshot.forEach(documentSnapshot => {
-        console.log('User ID: ', documentSnapshot.id, documentSnapshot.data());
-        let info = documentSnapshot.data();
-        userInfoAll.push(
-          {
-            firstname: info.firstName,
-            lastname: info.lastName,
-            mail: info.email,
-            password: info.password,
-            key: documentSnapshot.id,
-          }
-        )
-        //setIsLoading(true)
-      });
-      setUserData(userInfoAll)
+      if(querySnapshot) {
+
+        querySnapshot.forEach(documentSnapshot => {
+          let info = documentSnapshot.data();
+          userInfoAll.push(
+            {
+              firstname: info.firstName,
+              lastname: info.lastName,
+              mail: info.email,
+              password: info.password,
+              key: documentSnapshot.id,
+            }
+          )
+          //setIsLoading(true)
+        });
+        setUserData(userInfoAll)
+      }
     })
     
         
-  }
+    return () => dataFirebase();
+  
 }, [])
 
 
@@ -79,7 +78,7 @@ console.log("My data is : ",userData);
     if(user) {
         firestore()
         .collection('Users')
-        .doc(user.uid)
+        .doc(user)
         .collection('compte')
         .doc(key)
         .delete()
@@ -88,6 +87,18 @@ console.log("My data is : ",userData);
           });
     }
 }
+/* const [move, setMove] = useState<boolean>(true);
+
+const moveStyleDown = {
+  marginTop: move ? 10 : 0,
+  marginBottom: !move ? 10 : 0,
+}
+
+useEffect(() => {
+  const mouvement = setInterval(() => {
+    setMove(!move);
+  }, 4000);
+}) */
 
 
 
@@ -114,7 +125,7 @@ const _renderItemAll = ({item}: {item: datafirestoreType}) => {
                 <Text style={{color: 'white'}} onPress={() => SignOut(navigation)}>Déconnexion</Text>
               </View>
               <View style={styles.containerAlien}>
-                <Image source={require('../assets/alien1.png')} style={styles.alienStyle}/>
+                <Image source={require('../assets/alien1.png')} style={[styles.alienStyle]}/>
               </View>
               <View style={styles.containerInfoFirestore}>
                 <View style={styles.styleFlatlist}>
@@ -190,7 +201,7 @@ const styles = StyleSheet.create({
   alienStyle: {
     width: "100%",
     height: 200,
-    resizeMode: "contain"
+    resizeMode: "contain",
   }
 
 })

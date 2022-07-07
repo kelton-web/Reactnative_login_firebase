@@ -1,0 +1,2 @@
+export const arrayPlanete  = [require("../assets/planete-mars.png"),require("../assets/soleil.png"),require("../assets/pluton.png"),require("../assets/charon.png"),require("../assets/eris.png"), require("../assets/jupiter.png"),require("../assets/neptune.png"),require("../assets/lune.png"),require("../assets/mercure.png"), 
+require("../assets/planete-mars.png"),require("../assets/saturne.png"),require("../assets/uranus.png"),require("../assets/venus.png")];

@@ -6,6 +6,7 @@ import auth from '@react-native-firebase/auth';
 import ModalUpdate from '../actionFirestore/ModalUpdate';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { arrayPlanete } from '../../utils/DataPlanete';
 
 
 
@@ -17,21 +18,26 @@ interface PropsType {
     Key: any;
     onPress: (key: string) => void,
 }
+
 //auth().currentUser.delete(), il me semble
 const ListItem: React.FC<PropsType> = ({firstname, lastname, mail, password, onPress, Key}) => {
     const [isVisible, setIsvisible] =useState<boolean>(false)
     const [isLock, setIsLock] = useState<boolean>(false);
-
+    
+    let rand = Math.floor(Math.random()*arrayPlanete.length);
+    let rValue = arrayPlanete[rand];
+    //console.log("mon array" + rValue)
 
     // const user = auth().currentUser;
 const isVisibleFunction = () => {
     setIsvisible(!isVisible);
 }
+
   return (
     <View style={styles.container}>
         <View style={styles.smallContainer}>
             <View style={styles.containeLogo}>
-                <Image source={require("../../assets/planete-mars.png")} style={styles.logo} />
+                <Image source={rValue} style={styles.logo} />
             </View>
             <View style={styles.styleInfoDelete}>
 
@@ -150,7 +156,7 @@ const styles = StyleSheet.create({
         width: 90,
         height: 90,
         borderRadius: 50,
-        
+        resizeMode: "cover"
         
       }
 })

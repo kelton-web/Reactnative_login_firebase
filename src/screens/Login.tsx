@@ -27,6 +27,7 @@ const Login = () => {
    const submitButtonLogin = (value: FormValuesSignUp) => {
     clearErrors();
       LoginUserBase(value, navigation)
+      
    }
    const submitButtonSignup = () => {
       navigation.navigate('SignUp');
