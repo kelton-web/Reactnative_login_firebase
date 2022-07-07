@@ -14,6 +14,8 @@ import { NavigateParams } from "../../types/Types";
 import { CreateUserBase, LoginUserBase } from '../../firebase/Auth';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import firestore from '@react-native-firebase/firestore';
+import  FontIcon  from "react-native-vector-icons/FontAwesome"
+
 
 interface modalType {
     Key: string
@@ -50,10 +52,10 @@ const ModalUpdate: React.FC<modalType>= ({Key, lastname, mail, password, firstna
         .collection('compte')
         .doc(Key)
         .update({
-            firstName: value.firstName,
-            lastName: value.lastName,
-            email: value.email,
-            password: value.password,
+            firstName: value.firstName || firstname,
+            lastName: value.lastName || lastname,
+            email: value.email || mail,
+            password: value.password || password,
         })
         .then(() => {
             console.log('User Update!' + Key);
@@ -77,7 +79,7 @@ const ModalUpdate: React.FC<modalType>= ({Key, lastname, mail, password, firstna
       >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <Text>Modifier les informations</Text>
+            <Text style={{fontSize: 20, marginBottom: 20, marginTop: -20}}>Modifier les informations</Text>
             <View style={styles.smallcontainerInput}>
             <Controller control={control} name="firstName" render={({field: {onChange, value, onBlur}, fieldState: {error}}) => (
                 <InputAll value={value} placeholder={firstname} type="text" onChangeText={onChange} error={!!error} errorDetails={error?.message} onBlur={onBlur}/>
@@ -107,12 +109,9 @@ const ModalUpdate: React.FC<modalType>= ({Key, lastname, mail, password, firstna
           </View>
         </View>
       </Modal>
-      <Pressable
-        style={[styles.button, styles.buttonOpen]}
-        onPress={() => setModalVisible(true)}
-      >
-        <Text style={styles.textStyle}>Show Modal</Text>
-      </Pressable>
+      
+      <Text style={{marginTop: 8}}><FontIcon name='edit' size={24} color='white' onPress={() => setModalVisible(true)} /></Text>
+
     </View>
   );
 };
@@ -128,7 +127,7 @@ const styles = StyleSheet.create({
   modalView: {
     margin: 20,
     width: '100%',
-    backgroundColor: "white",
+    backgroundColor: "rgba(236, 240, 241,.8)",
     borderRadius: 20,
     padding: 35,
     alignItems: "center",
@@ -142,9 +141,11 @@ const styles = StyleSheet.create({
     elevation: 5
   },
   button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2
+    borderRadius: 10,
+    elevation: 2,
+    paddingVertical: 10,
+    width: "80%",
+    top: 10
   },
   buttonOpen: {
     backgroundColor: "#F194FF",
@@ -158,13 +159,22 @@ const styles = StyleSheet.create({
     textAlign: "center",
     paddingHorizontal: 90,
   },
+  textStyleBtn: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+    fontSize: 12,
+    paddingVertical: 5,
+    width: "100%",
+  },
   modalText: {
     marginBottom: 15,
     textAlign: "center"
   },
   smallcontainerInput: {
     width: "100%",
-    marginVertical: 5
+    marginVertical: 5,
+    resizeMode: "cover"
   }
 });
 

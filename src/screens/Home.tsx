@@ -2,7 +2,7 @@
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { SignOut, CreateDataFirestore, getAllFirestore } from '../firebase/Auth';
 import React, { useEffect, useState } from "react";
-import { FlatList, ImageBackground, StyleSheet, Text, View } from 'react-native';
+import { FlatList, ImageBackground, StyleSheet, Text, View, Image } from 'react-native';
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormValuesSignUp } from '../types/Types';
@@ -33,7 +33,6 @@ const navigation = useNavigation<NativeStackNavigationProp<NavigateParams>>();
 const route = useRoute<RouteProp<NavigateParams>>();
 
 const [userData, setUserData] = useState<datafirestoreType[]>([]);
-const [isLoading, setIsLoading] = useState<boolean>(false);
 const LookFacebook = () => {
   navigation.push('AddInfo');
 };
@@ -45,10 +44,10 @@ useEffect(() => {
     .collection('Users')
     .doc(user.uid)
     .collection('compte')
-    .get()
-    .then(querySnapshot => {
-      console.log('Total users: ', querySnapshot.size);
+    .onSnapshot((querySnapshot) => {
 
+      console.log('Total users: ', querySnapshot.size);
+  
       const userInfoAll: datafirestoreType[] = [];
   
       querySnapshot.forEach(documentSnapshot => {
@@ -66,8 +65,9 @@ useEffect(() => {
         //setIsLoading(true)
       });
       setUserData(userInfoAll)
+    })
+    
         
-    });
   }
 }, [])
 
@@ -89,24 +89,7 @@ console.log("My data is : ",userData);
     }
 }
 
-    const UpdateInfo = (Key: string) => {
-       if(user) {
-        firestore()
-        .collection('Users')
-        .doc(user.uid)
-        .collection('compte')
-        .doc(Key)
-        .update({
-            firstName: "what",
-            lastName: "lastName",
-            email: "info@gmail.com",
-            password: "password",
-        })
-        .then(() => {
-            console.log('User Update!' + Key);
-          });
-    }
-  }
+
 
 const _renderItemAll = ({item}: {item: datafirestoreType}) => {
   return (
@@ -118,7 +101,6 @@ const _renderItemAll = ({item}: {item: datafirestoreType}) => {
       password={item.password}
       Key={item.key}
       onPress={(key) =>DeleteInfo(key)}
-      onPressIn={(key) => UpdateInfo(key)}
       />
     </View>
   )
@@ -131,7 +113,9 @@ const _renderItemAll = ({item}: {item: datafirestoreType}) => {
                 <Text style={{color: 'white'}}>Hello {route.params?.email}</Text>
                 <Text style={{color: 'white'}} onPress={() => SignOut(navigation)}>Déconnexion</Text>
               </View>
-              
+              <View style={styles.containerAlien}>
+                <Image source={require('../assets/alien1.png')} style={styles.alienStyle}/>
+              </View>
               <View style={styles.containerInfoFirestore}>
                 <View style={styles.styleFlatlist}>
                   <FlatList
@@ -140,7 +124,7 @@ const _renderItemAll = ({item}: {item: datafirestoreType}) => {
                     keyExtractor={item => item.key}
                     />
                   </View>
-                  <View>
+                  <View style={styles.btnStyle}>
                     <ButtonSubmit onPress={() => LookFacebook()} title="Add Info" style={styles.buttonStyle} textStyle={styles.textStyle}/>
                   </View>
               </View>
@@ -156,7 +140,6 @@ const styles = StyleSheet.create({
     height: "100%",
     width: "100%",
     resizeMode: "contain",
-    justifyContent: "flex-end",
     alignItems: "center",
   },
   container: {
@@ -167,12 +150,17 @@ const styles = StyleSheet.create({
   infoStyle: {
     flexDirection: "row",
     justifyContent: "space-around",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 1)",
+    height: 30,
+    width: "100%"
   },
   containerInfoFirestore: {
     width: "100%",
     height: "80%",
-    backgroundColor: "rgba(255, 255, 255, 0.5)",
-
+    flex: 1,
+    justifyContent: "center",
+    marginBottom: 20,
   },
   buttonStyle: {
     height: 50,
@@ -187,7 +175,22 @@ const styles = StyleSheet.create({
   },
   styleFlatlist: {
     width: "100%",
-    height: "40%",
+    height: "80%",
+  },
+  btnStyle: {
+    top: 20
+  },
+  containerAlien: {
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    top: 25,
+    right: 5,
+  },
+  alienStyle: {
+    width: "100%",
+    height: 200,
+    resizeMode: "contain"
   }
 
 })
