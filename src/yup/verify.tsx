@@ -52,3 +52,17 @@ export const validationSchemaLogin = Yup.object({
       .min(6, "Veuillez saisir au moins 6 caractères")
       .required("Veuillez saisir un mot de passe"),
   }).required();
+/* ********* Validation input forgotten password ****************/
+
+export const validationSchemaForgot = Yup.object({
+    password: Yup.string()
+      .min(6, "Veuillez saisir au moins 6 caractères")
+      .required("Veuillez saisir un mot de passe"),
+  }).required();
+/* ********* Validation input forgotten password ****************/
+
+export const validationSchemaSendMail = Yup.object({
+  email: Yup.string()
+    .email("Veuillez saisir une adresse mail valide")
+    .required("Veuillez saisir une adresse mail"),
+  }).required();

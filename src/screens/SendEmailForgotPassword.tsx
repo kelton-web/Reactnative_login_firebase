@@ -5,48 +5,36 @@ import InputAll from '../components/_Shared/InputAll';
 import { useNavigation } from '@react-navigation/native';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LoginUserBase } from '../firebase/Auth';
-import { validationSchemaForgot } from '../yup/verify';
+import { validationSchemaSendMail } from '../yup/verify';
 import { NavigateParams } from '../types/Types';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import auth from '@react-native-firebase/auth';
 import ButtonSubmit from '../components/_Shared/ButtonSubmit';
 
-type FormValuesForgot = {
+
+type FormValuesSendMail = {
   
-  password: string;
+  email: string;
 }
 
-export const ForgotenPassword = (value: FormValuesForgot, navigation: any) => {
-  auth()
-    .signInWithEmailAndPassword("hello", value.password)
-    .then(() => {
-      console.log('signed in!');
-      navigation.replace('Home',{password: value.password});
 
-    })
-    .catch(error => {
-      if (error.code === 'auth/email-already-in-use') {
-        console.log('That email address is already in use!');
-      }
+export const SendEmailForgot = (value: FormValuesSendMail, navigation: any) => {
+    //const auth = getAuth();
+    console.log("get mail")
+    navigation.navigate('ForgotPassword')
 
-      if (error.code === 'auth/invalid-email') {
-        console.log('That email address is invalid!');
-      }
-
-      console.error(error);
-    });
 }
-const ForgotPassword = () => {
+const SendEmailForgotPassword = () => {
   const navigation = useNavigation<NativeStackNavigationProp<NavigateParams>>();
 
-  const {control, handleSubmit, clearErrors, formState: {errors}} = useForm<FormValuesForgot>({
-     resolver: yupResolver(validationSchemaForgot),
+  const {control, handleSubmit, clearErrors, formState: {errors}} = useForm<FormValuesSendMail>({
+     resolver: yupResolver(validationSchemaSendMail),
      mode: 'onSubmit',
   })
 
-  const submitButtonForgot = (value: FormValuesForgot) => {
+  const submitButtonSendEmail = (value: FormValuesSendMail) => {
    clearErrors();
-   ForgotenPassword(value, navigation)
+   SendEmailForgot(value, navigation)
   }
 
   return (
@@ -54,23 +42,23 @@ const ForgotPassword = () => {
       <View style={styles.container}>
         <View style={{flex: 2,  justifyContent: "flex-end"}}>
           <View style={styles.smallContainer}>
-            <Controller control={control} name="password" render={({field: {onChange, value, onBlur}, fieldState: {error}}) => (
-                      <InputAll value={value} placeholder="Nouveau mot de passe" type="password" onChangeText={onChange} error={!!error} errorDetails={error?.message} onBlur={onBlur}/>
+            <Controller control={control} name="email" render={({field: {onChange, value, onBlur}, fieldState: {error}}) => (
+                      <InputAll value={value} placeholder="Entrez votre email" type="email" onChangeText={onChange} error={!!error} errorDetails={error?.message} onBlur={onBlur}/>
                   )} />
           </View>
           <View>
-            <ButtonSubmit title="Connexion" onPress={handleSubmit((value) => submitButtonForgot(value))} style={styles.buttonStyle} textStyle={styles.textStyle} />
+            <ButtonSubmit title="Envoyer" onPress={handleSubmit((value) => submitButtonSendEmail(value))} style={styles.buttonStyle} textStyle={styles.textStyle} />
           </View>
         </View>
         <View style={styles.imgStyle}>
-          <Image source={require("../assets/istock-alien.png")} style={styles.imgAlien}/>
+          <Image source={require("../assets/aliensnasapng.png")} style={styles.imgAlien}/>
         </View>
       </View>
     </ImageBackground>
   )
 }
 
-export default ForgotPassword
+export default SendEmailForgotPassword
 
 const styles = StyleSheet.create({
   imageBackground: {
@@ -100,11 +88,12 @@ const styles = StyleSheet.create({
   imgStyle: {
     width: "100%",
     flex: 2,
-    justifyContent: "flex-start",
+    justifyContent: "flex-end",
   },
   imgAlien: {
     width: 400,
-    height: 400
+    height: 300,
+    resizeMode: "cover",
   }
 
 })

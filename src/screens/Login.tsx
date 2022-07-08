@@ -27,10 +27,14 @@ const Login = () => {
    const submitButtonLogin = (value: FormValuesSignUp) => {
     clearErrors();
       LoginUserBase(value, navigation)
-      
    }
+
    const submitButtonSignup = () => {
       navigation.navigate('SignUp');
+   }
+
+   const HandleForgot = () => {
+      navigation.navigate('SendEmailForgotPassword');
    }
 
   return (
@@ -46,6 +50,9 @@ const Login = () => {
             <Controller control={control} name="password" render={({field: {onChange, value, onBlur}, fieldState: {error}}) => (
                 <InputAll value={value} placeholder="Mot de passe" type="password" onChangeText={onChange} error={!!error} errorDetails={error?.message} onBlur={onBlur}/>
             )} />
+          </View>
+          <View style={styles.MotdePasse}>
+            <Text style={{color: 'white', fontWeight: 'bold'}} onPress={HandleForgot}>Mot de passe oublié ?</Text>
           </View>
           <View style={styles.submitButtonStyle}>
             <ButtonSubmit title="Connexion" onPress={handleSubmit((value) => submitButtonLogin(value))} style={styles.buttonStyle} textStyle={styles.textStyle} />
@@ -102,5 +109,12 @@ const styles = StyleSheet.create({
   },
   textStyle: {
       fontSize: 20
+  },
+  MotdePasse: {
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    left: 70,
+
   }
 })

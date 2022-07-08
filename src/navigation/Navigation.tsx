@@ -9,6 +9,7 @@ import Login from '../screens/Login';
 import { NavigateParams } from '../types/Types';
 import AddInfo from '../components/actionFirestore/AddInfo';
 import ModalUpdate from '../components/actionFirestore/ModalUpdate';
+import SendEmailForgotPassword from '../screens/SendEmailForgotPassword';
 
 const Stack = createNativeStackNavigator<NavigateParams>();
 
@@ -22,6 +23,7 @@ const Navigation = () => {
             <Stack.Screen name="ModalUpdate" component={ModalUpdate} />
             <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
             <Stack.Screen name="AddInfo" component={AddInfo} />
+            <Stack.Screen name="SendEmailForgotPassword" component={SendEmailForgotPassword} />
         </Stack.Navigator>
     </NavigationContainer>
   )

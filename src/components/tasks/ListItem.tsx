@@ -1,5 +1,5 @@
 import { Image, StyleSheet, Text, View } from 'react-native'
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import ButtonSubmit from '../_Shared/ButtonSubmit';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
@@ -23,9 +23,13 @@ interface PropsType {
 const ListItem: React.FC<PropsType> = ({firstname, lastname, mail, password, onPress, Key}) => {
     const [isVisible, setIsvisible] =useState<boolean>(false)
     const [isLock, setIsLock] = useState<boolean>(false);
-    
-    let rand = Math.floor(Math.random()*arrayPlanete.length);
-    let rValue = arrayPlanete[rand];
+    const [rValue, setrValue] = useState<any>();
+
+
+    useEffect(() => {
+        let rand = Math.floor(Math.random()*arrayPlanete.length);
+        setrValue(arrayPlanete[rand])
+    },[])
     //console.log("mon array" + rValue)
 
     // const user = auth().currentUser;

@@ -8,6 +8,7 @@ export type NavigateParams = {
     ForgotPassword: undefined,
     AddInfo: undefined,
     ModalUpdate: undefined,
+    SendEmailForgotPassword: undefined,
 }
 
 /* ******************************* Type de Yup Formulaire SignUp*********** */
