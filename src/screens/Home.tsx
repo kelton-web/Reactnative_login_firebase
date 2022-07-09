@@ -121,7 +121,7 @@ const _renderItemAll = ({item}: {item: datafirestoreType}) => {
         <ImageBackground source={require('../assets/planete.jpeg')} style={styles.imageBackground} >
             <View style={styles.container}>
               <View style={styles.infoStyle}>
-                <Text style={{color: 'white'}}>Hello {route.params?.email}</Text>
+                <Text style={{color: 'white'}}>Welcome {route.params?.email}</Text>
                 <Text style={{color: 'white'}} onPress={() => SignOut(navigation)}>Déconnexion</Text>
               </View>
               <View style={styles.containerAlien}>

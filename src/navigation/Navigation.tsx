@@ -17,13 +17,13 @@ const Navigation = () => {
   return (
     <NavigationContainer>
         <Stack.Navigator initialRouteName="Login">
-            <Stack.Screen name="Home" component={Home} />
-            <Stack.Screen name="SignUp" component={SignUp} />
-            <Stack.Screen name="Login" component={Login} />
-            <Stack.Screen name="ModalUpdate" component={ModalUpdate} />
+            <Stack.Screen name="Home" component={Home} options={{ title: 'Accueil' }}/>
+            <Stack.Screen name="SignUp" component={SignUp} options={{ title: 'Inscription' }}/>
+            <Stack.Screen name="Login" component={Login} options={{ title: 'Se connecter' }}/>
+            <Stack.Screen name="ModalUpdate" component={ModalUpdate} options={{ title: 'Modifier les informations' }}/>
             <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
-            <Stack.Screen name="AddInfo" component={AddInfo} />
-            <Stack.Screen name="SendEmailForgotPassword" component={SendEmailForgotPassword} />
+            <Stack.Screen name="AddInfo" component={AddInfo} options={{ title: 'Ajouter une informations' }}/>
+            <Stack.Screen name="SendEmailForgotPassword" component={SendEmailForgotPassword} options={{ title: 'Mot de passe oublié' }}/>
         </Stack.Navigator>
     </NavigationContainer>
   )

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { StyleSheet, Text, View, ImageBackground, Image } from 'react-native';
 import { Controller, useForm } from 'react-hook-form';
 import InputAll from '../components/_Shared/InputAll';
@@ -8,7 +8,7 @@ import { LoginUserBase } from '../firebase/Auth';
 import { validationSchemaSendMail } from '../yup/verify';
 import { NavigateParams } from '../types/Types';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import auth from '@react-native-firebase/auth';
+import auth, { firebase } from '@react-native-firebase/auth';
 import ButtonSubmit from '../components/_Shared/ButtonSubmit';
 
 
@@ -18,19 +18,22 @@ type FormValuesSendMail = {
 }
 
 
-export const SendEmailForgot = (value: FormValuesSendMail, navigation: any) => {
-    //const auth = getAuth();
-    console.log("get mail")
-    navigation.navigate('ForgotPassword')
 
-}
 const SendEmailForgotPassword = () => {
-  const navigation = useNavigation<NativeStackNavigationProp<NavigateParams>>();
+    const [isGood, setIsGood] = useState<boolean>(true);
 
-  const {control, handleSubmit, clearErrors, formState: {errors}} = useForm<FormValuesSendMail>({
-     resolver: yupResolver(validationSchemaSendMail),
-     mode: 'onSubmit',
-  })
+    const navigation = useNavigation<NativeStackNavigationProp<NavigateParams>>();
+    
+    const {control, handleSubmit, clearErrors, formState: {errors}} = useForm<FormValuesSendMail>({
+        resolver: yupResolver(validationSchemaSendMail),
+        mode: 'onSubmit',
+    })
+    
+    const SendEmailForgot = (value: FormValuesSendMail, navigation: any) => {
+        //const auth = getAuth();
+        console.log("get mail" + value.email)
+        firebase.auth().sendPasswordResetEmail(value.email).then((response) => setIsGood(false));
+    }
 
   const submitButtonSendEmail = (value: FormValuesSendMail) => {
    clearErrors();
@@ -50,9 +53,16 @@ const SendEmailForgotPassword = () => {
             <ButtonSubmit title="Envoyer" onPress={handleSubmit((value) => submitButtonSendEmail(value))} style={styles.buttonStyle} textStyle={styles.textStyle} />
           </View>
         </View>
-        <View style={styles.imgStyle}>
-          <Image source={require("../assets/aliensnasapng.png")} style={styles.imgAlien}/>
-        </View>
+        {isGood && (
+            <View style={styles.imgStyle}>
+                <Image source={require("../assets/aliensnasapng.png")} style={styles.imgAlien}/>
+            </View>
+        )}
+        {!isGood && (
+            <View style={styles.imgStyle}>
+                <Image source={require("../assets/istock-alien.png")} style={styles.imgAlien}/>
+            </View>
+        )}
       </View>
     </ImageBackground>
   )

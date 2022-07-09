@@ -19,14 +19,16 @@ export const CreateUserBase = (value: FormValuesSignUp, navigation: any) => {
       })
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {
-          console.log('That email address is already in use!');
+          console.log('Cette adresse email est déjà utilisée !');
         }
-
         if (error.code === 'auth/invalid-email') {
-          console.log('That email address is invalid!');
+          console.log('Le mail est ne correspond à aucun compte !');
+        }
+        if (error.code === 'auth/wrong-password') {
+          console.log('Le mot de passe correspond à aucun compte !');
         }
 
-        console.error(error);
+        //console.error(error);
       });
 }
 
@@ -77,11 +79,13 @@ export const LoginUserBase = (value: FormValuesSignUp, navigation: any) => {
       })
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {
-          console.log('That email address is already in use!');
+          console.log('Cette adresse email est déjà utilisée !');
         }
-
         if (error.code === 'auth/invalid-email') {
-          console.log('That email address is invalid!');
+          console.log('Le mail est ne correspond à aucun compte !');
+        }
+        if (error.code === 'auth/wrong-password') {
+          console.log('Le mot de passe correspond à aucun compte !');
         }
 
         console.error(error);
