@@ -4,8 +4,9 @@ import { getFirestore } from "firebase/firestore";
 import { doc, setDoc } from "firebase/firestore"; 
 import firestore from '@react-native-firebase/firestore';
 import { NavigateParams, FormValuesSignUp } from '../types/Types';
-import { login } from '../types/Interface';
-import { Alert } from "react-native";
+import * as React from 'react';
+import { AsyncStorage } from 'react-native';
+
 
 
 /* ********* Create User SignUp ****************/
@@ -75,7 +76,8 @@ export const LoginUserBase = (value: FormValuesSignUp, navigation: any) => {
       .then(() => {
         console.log('signed in!');
         navigation.replace('Home',{email: value.email});
-
+        
+        
       })
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {
@@ -99,6 +101,7 @@ export const SignOut = (navigation: any) => {
   .signOut()
   .then(() => {
     console.log('User signed out!')
+    AsyncStorage.removeItem('UID123')
     navigation.replace('Login')
   });
 }

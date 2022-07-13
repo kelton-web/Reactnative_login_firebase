@@ -37,6 +37,7 @@ const LookFacebook = () => {
   navigation.push('AddInfo');
 };
 const user = auth().currentUser?.uid;
+const userMail = auth().currentUser?.email;
 
 useEffect(() => {
 
@@ -111,7 +112,7 @@ const _renderItemAll = ({item}: {item: datafirestoreType}) => {
       mail={item.mail}
       password={item.password}
       Key={item.key}
-      onPress={(key) =>DeleteInfo(key)}
+      onPress={(key) => DeleteInfo(key)}
       />
     </View>
   )
@@ -121,7 +122,7 @@ const _renderItemAll = ({item}: {item: datafirestoreType}) => {
         <ImageBackground source={require('../assets/planete.jpeg')} style={styles.imageBackground} >
             <View style={styles.container}>
               <View style={styles.infoStyle}>
-                <Text style={{color: 'white'}}>Welcome {route.params?.email}</Text>
+                <Text style={{color: 'white'}}>Welcome {userMail}</Text>
                 <Text style={{color: 'white'}} onPress={() => SignOut(navigation)}>Déconnexion</Text>
               </View>
               <View style={styles.containerAlien}>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  * as React from 'react';
 import { ImageBackground, StyleSheet, Text, View } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import * as Yup from 'yup';
@@ -13,7 +13,7 @@ import { NavigateParams } from "../types/Types";
 import { CreateUserBase, LoginUserBase } from '../firebase/Auth';
 import InputAll from '../components/_Shared/InputAll';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import { AsyncStorage } from 'react-native';
 
 
 const Login = () => {
@@ -24,10 +24,60 @@ const Login = () => {
       mode: 'onSubmit',
    })
 
+   const userID = auth().currentUser?.uid;
+   const userMail = auth().currentUser?.email;
+  
+
+   const storeData = async (value: FormValuesSignUp, navigation: any) => {
+
+    let UID123_object = {
+      name: value.email,
+      password: value.password,
+    };
+
+     try {
+       await AsyncStorage.setItem( 'UID123', JSON.stringify(UID123_object)),
+       console.log(value.email)
+     } catch (e) {
+       // saving error
+     }
+   }
+   
    const submitButtonLogin = (value: FormValuesSignUp) => {
     clearErrors();
       LoginUserBase(value, navigation)
+
+      storeData(value, navigation)
+
+     /*  if(value) {
+        AsyncStorage.setItem( 'UID123', JSON.stringify(UID123_object)),
+        console.log(value.email)
+      } else {
+        console.log("Pas de user");
+      } */
+
+     
    }
+
+
+
+   React.useEffect(() => {
+    
+   AsyncStorage.getItem('UID123', (err, result) => {
+      console.log("Le resultat" + result);
+      console.log("Le resultat" + result);
+      if(result) {
+        const userObject = JSON.parse(result)
+        console.log("resultat" + userObject.name);
+
+        auth()
+        .signInWithEmailAndPassword(userObject.name, userObject.password)
+        .then(() => {
+          navigation.navigate('Home');  
+        }) 
+      }
+    });
+   }, [])
 
    const submitButtonSignup = () => {
       navigation.navigate('SignUp');
@@ -36,6 +86,8 @@ const Login = () => {
    const HandleForgot = () => {
       navigation.navigate('SendEmailForgotPassword');
    }
+
+
 
   return (
     <View style={styles.container}>

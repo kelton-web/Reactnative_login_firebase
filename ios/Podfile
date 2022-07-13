@@ -20,6 +20,8 @@ target 'ex_16_login_firebase' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+  pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-async-storage/async-storage'
+
   target 'ex_16_login_firebaseTests' do
     inherit! :complete
     # Pods for testing
