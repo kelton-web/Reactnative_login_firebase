@@ -28,26 +28,27 @@ const Login = () => {
    const userMail = auth().currentUser?.email;
   
 
-   const storeData = async (value: FormValuesSignUp, navigation: any) => {
+/*    const storeData = async (value: FormValuesSignUp, navigation: any) => {
 
     let UID123_object = {
       name: value.email,
       password: value.password,
     };
-
+    if(userID){
      try {
        await AsyncStorage.setItem( 'UID123', JSON.stringify(UID123_object)),
        console.log(value.email)
      } catch (e) {
        // saving error
      }
-   }
+    }
+   } */
    
    const submitButtonLogin = (value: FormValuesSignUp) => {
     clearErrors();
       LoginUserBase(value, navigation)
 
-      storeData(value, navigation)
+      /* storeData(value, navigation) */
 
      /*  if(value) {
         AsyncStorage.setItem( 'UID123', JSON.stringify(UID123_object)),
@@ -66,18 +67,22 @@ const Login = () => {
    AsyncStorage.getItem('UID123', (err, result) => {
       console.log("Le resultat" + result);
       console.log("Le resultat" + result);
-      if(result) {
+      /* if(result) {
         const userObject = JSON.parse(result)
         console.log("resultat" + userObject.name);
 
         auth()
         .signInWithEmailAndPassword(userObject.name, userObject.password)
         .then(() => {
-          navigation.navigate('Home');  
-        }) 
-      }
+          navigation.replace('Home');
+        })
+      } */
     });
    }, [])
+
+   if (userID) {
+    navigation.replace('Home');
+  }
 
    const submitButtonSignup = () => {
       navigation.navigate('SignUp');

@@ -7,6 +7,7 @@ import { NavigateParams, FormValuesSignUp } from '../types/Types';
 import * as React from 'react';
 import { AsyncStorage } from 'react-native';
 
+const user = auth().currentUser?.uid;
 
 
 /* ********* Create User SignUp ****************/
@@ -76,8 +77,14 @@ export const LoginUserBase = (value: FormValuesSignUp, navigation: any) => {
       .then(() => {
         console.log('signed in!');
         navigation.replace('Home',{email: value.email});
-        
-        
+
+        let UID123_object = {
+          name: value.email,
+          password: value.password,
+        };
+           AsyncStorage.setItem( 'UID123', JSON.stringify(UID123_object)),
+           console.log(value.email)
+
       })
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {
@@ -89,11 +96,17 @@ export const LoginUserBase = (value: FormValuesSignUp, navigation: any) => {
         if (error.code === 'auth/wrong-password') {
           console.log('Le mot de passe correspond à aucun compte !');
         }
+        if (error.code === 'auth/user-not-found') {
+          console.log('L\'utilisateur existe pas !');
+        }
 
         console.error(error);
       });
-}
 
+
+    }
+    
+    
 /* ********* sign out user ****************/
 
 export const SignOut = (navigation: any) => {
