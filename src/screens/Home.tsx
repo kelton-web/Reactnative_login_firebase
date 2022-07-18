@@ -18,6 +18,8 @@ import auth from '@react-native-firebase/auth';
 import ListItem from '../components/tasks/ListItem';
 import ModalUpdate from '../components/actionFirestore/ModalUpdate';
 
+
+
 interface datafirestoreType {
     firstname: string;
     lastname: string;

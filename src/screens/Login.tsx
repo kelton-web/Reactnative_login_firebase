@@ -1,5 +1,5 @@
 import  * as React from 'react';
-import { ImageBackground, StyleSheet, Text, View } from 'react-native';
+import { ImageBackground, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import * as Yup from 'yup';
 import { useForm, Controller } from 'react-hook-form';
@@ -7,13 +7,15 @@ import { FormValuesSignUp } from '../types/Types';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { validationSchema, validationSchemaLogin } from '../yup/verify';
 import ButtonSubmit from '../components/_Shared/ButtonSubmit';
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { NavigateParams } from "../types/Types";
 import { CreateUserBase, LoginUserBase } from '../firebase/Auth';
 import InputAll from '../components/_Shared/InputAll';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { AsyncStorage } from 'react-native';
+import ReactNativeBiometrics, { BiometryTypes } from 'react-native-biometrics'
+
 
 
 const Login = () => {
@@ -26,7 +28,12 @@ const Login = () => {
 
    const userID = auth().currentUser?.uid;
    const userMail = auth().currentUser?.email;
-  
+   React.useEffect(() => {
+
+     if (userID) {
+      navigation.replace('Home');
+    }
+   },[])
 
 /*    const storeData = async (value: FormValuesSignUp, navigation: any) => {
 
@@ -43,6 +50,149 @@ const Login = () => {
      }
     }
    } */
+
+
+   
+   
+   const rnBiometrics = new ReactNativeBiometrics({ allowDeviceCredentials: true })
+   
+   const HandleBiometrics = async ()   => {
+     
+     console.log("================================");
+     
+     rnBiometrics.isSensorAvailable()
+     .then((resultObject) => {
+       const { available, biometryType } = resultObject
+   
+       if (available && biometryType === BiometryTypes.TouchID) {
+       /*   rnBiometrics.createKeys()
+        .then((resultObject) => {
+          const { publicKey } = resultObject
+          console.log(publicKey)
+        })  */
+         console.log('TouchID is supported')
+       } else if (available && biometryType === BiometryTypes.FaceID) {
+         console.log('FaceID is supported')
+       } else if (available && biometryType === BiometryTypes.Biometrics) {
+         console.log('Biometrics is supported')
+       } else {
+         console.log('Biometrics not supported')
+       }
+     })
+     .catch(error => {
+      console.log("Voir mon erreur",error)
+  })
+}
+
+/* const rnBiometricsdelete = () => {
+  console.log("resultObject =================================================")
+  
+  rnBiometrics.deleteKeys()
+  .then((resultObject) => {
+    const { keysDeleted } = resultObject
+    
+    if (keysDeleted) {
+      console.log('Successful deletion')
+    } else {
+      console.log('Unsuccessful deletion because there were no keys to delete')
+    }
+  }) 
+  AsyncStorage.removeItem('UID1234')
+
+}*/
+
+
+
+let epochTimeSeconds = Math.round((new Date()).getTime() / 1000).toString()
+let payload = epochTimeSeconds + 'some message'
+const [isSuccess, setIsSuccess] = React.useState<boolean>(false);
+
+const rnBiometricsSignature = () => {
+  console.log('signature avant', payload);
+ 
+  rnBiometrics.createSignature({
+      promptMessage: 'Sign in',
+      payload: payload
+    })
+    .then((resultObject) => {
+      const { success, signature } = resultObject;
+      console.log('signature', success, signature);
+      console.log('signature', payload);
+
+      AsyncStorage.getItem('UID1234', (err, result) => {
+        console.log("Le resultat" + result);
+        console.log("Le resultat" + result);
+         if(result) {
+          const userObject = JSON.parse(result)
+          console.log("resultat" + userObject.name);
+  
+          auth()
+          .signInWithEmailAndPassword(userObject.name, userObject.password)
+          .then(() => {
+            navigation.replace('Home');
+          })
+        } 
+      });
+      
+ 
+      if (success) {
+        console.log(signature)
+        setIsSuccess(true);
+        //verifySignatureWithServer(signature, payload)
+      }
+    })
+    
+}
+
+  const rnBiometricsReact = () => {
+    console.log("resultObject =================================================")
+    
+    rnBiometrics.biometricKeysExist()
+      .then((resultObject) => {
+        const { keysExist } = resultObject
+        console.log("resultObject", resultObject)
+        
+        if (isSuccess !== true) {
+          console.log();
+        rnBiometricsSignature()
+        }/* else {
+          rnBiometricsPromptLog()
+        } */
+
+        if (keysExist) {
+          console.log('Keys exist')
+        } else {
+          console.log('Keys do not exist or were deleted')
+        }
+      })
+    }
+ /*  const rnBiometricsPromptLog = () => {
+rnBiometrics.simplePrompt({promptMessage: 'Confirm fingerprint'})
+  .then((resultObject) => {
+    const { success } = resultObject
+    console.log('login')
+    if (success) {
+      console.log('successful biometrics provided')
+      auth()
+      .signInWithEmailAndPassword('thug@gmail.com', 'Ganggang')
+      .then(() => {
+        console.log('signed in!');
+        navigation.replace('Home');
+    })
+    } else {
+      console.log('user cancelled biometric prompt')
+    }
+  })
+  .catch(() => {
+    console.log('biometrics failed')
+  })
+ }  */
+
+
+
+React.useEffect(() => {
+  HandleBiometrics();
+},[]) 
    
    const submitButtonLogin = (value: FormValuesSignUp) => {
     clearErrors();
@@ -80,9 +230,9 @@ const Login = () => {
     });
    }, [])
 
-   if (userID) {
+/*    if (userID) {
     navigation.replace('Home');
-  }
+  } */
 
    const submitButtonSignup = () => {
       navigation.navigate('SignUp');
@@ -116,6 +266,12 @@ const Login = () => {
           </View>
           <View style={styles.submitButtonStyle}>
             <ButtonSubmit title="Inscription" onPress={submitButtonSignup} style={styles.buttonInscriptionStyle} textStyle={styles.textStyle} />
+              <TouchableOpacity style={{backgroundColor: "red", justifyContent: "center", paddingVertical: 10, width: "50%"}} onPress={() => rnBiometricsReact()}>
+                <Text>Empreinte</Text>
+              </TouchableOpacity>
+             {/*  <TouchableOpacity style={{backgroundColor: "red", justifyContent: "center", paddingVertical: 10, width: "50%"}} onPress={() => rnBiometricsdelete()}>
+                <Text>Empreinte delete</Text>
+              </TouchableOpacity> */}
           </View>
         </View>
       </ImageBackground>
@@ -175,3 +331,7 @@ const styles = StyleSheet.create({
 
   }
 })
+
+
+
+

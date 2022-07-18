@@ -6,18 +6,44 @@ import firestore from '@react-native-firebase/firestore';
 import { NavigateParams, FormValuesSignUp } from '../types/Types';
 import * as React from 'react';
 import { AsyncStorage } from 'react-native';
+import ReactNativeBiometrics from 'react-native-biometrics';
 
 const user = auth().currentUser?.uid;
 
 
+
+
 /* ********* Create User SignUp ****************/
+
+const rnBiometrics = new ReactNativeBiometrics({ allowDeviceCredentials: true })
 
 export const CreateUserBase = (value: FormValuesSignUp, navigation: any) => {
     auth()
       .createUserWithEmailAndPassword(value.email, value.password)
       .then(() => {
         console.log('User account created & signed in!');
-        navigation.navigate('Login', {email: value.email});
+        let UID123_object = {
+          name: value.email,
+          password: value.password,
+        };
+       
+           AsyncStorage.setItem( 'UID123', JSON.stringify(UID123_object)),
+           console.log(value.email)
+        navigation.navigate('Home', {email: value.email, password: value.password});
+
+        rnBiometrics.createKeys()
+        .then((resultObject) => {
+          const { publicKey } = resultObject
+          console.log(publicKey)
+        })
+        let UID1234_object = {
+          name: value.email,
+          password: value.password,
+          publicKey: value.publicKey,
+        };
+        AsyncStorage.setItem( 'UID1234', JSON.stringify(UID1234_object)),
+        console.log(value.email, value.password, value.publicKey);
+
       })
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {
@@ -85,6 +111,14 @@ export const LoginUserBase = (value: FormValuesSignUp, navigation: any) => {
            AsyncStorage.setItem( 'UID123', JSON.stringify(UID123_object)),
            console.log(value.email)
 
+
+           let UID1234_object = {
+            name: value.email,
+            password: value.password,
+            publicKey: value.publicKey,
+          };
+          AsyncStorage.setItem( 'UID1234', JSON.stringify(UID1234_object)),
+          console.log(value.email, value.password, value.publicKey);
       })
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {
@@ -105,6 +139,7 @@ export const LoginUserBase = (value: FormValuesSignUp, navigation: any) => {
 
 
     }
+    
     
     
 /* ********* sign out user ****************/

@@ -14,6 +14,7 @@ export type NavigateParams = {
 /* ******************************* Type de Yup Formulaire SignUp*********** */
 
 export type FormValuesSignUp = {
+    publicKey: any
     firstName: string,
     lastName: string,
     email: string,
