@@ -7,6 +7,7 @@ import ModalUpdate from '../actionFirestore/ModalUpdate';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { arrayPlanete } from '../../utils/DataPlanete';
+import ReactNativeBiometrics from 'react-native-biometrics';
 
 
 
@@ -36,6 +37,27 @@ const ListItem: React.FC<PropsType> = ({firstname, lastname, mail, password, onP
 const isVisibleFunction = () => {
     setIsvisible(!isVisible);
 }
+const isLockFunction = () => {
+    setIsLock(!isLock);
+}
+
+const rnBiometrics = new ReactNativeBiometrics()
+
+const authPassword = () => {
+    rnBiometrics.simplePrompt({promptMessage: 'Confirm fingerprint'})
+      .then((resultObject) => {
+        const { success } = resultObject
+        if (success) {
+            setIsLock(!isLock)
+          console.log('successful biometrics provided')
+        } else {
+          console.log('user cancelled biometric prompt')
+        }
+      })
+      .catch(() => {
+        console.log('biometrics failed')
+    })
+}
 
   return (
     <View style={styles.container}>
@@ -57,7 +79,7 @@ const isVisibleFunction = () => {
                         <View style={{}}>
                            {isLock ? <Text style={{color: 'lightgray', marginBottom: 5}}>{password}</Text> : <Text style={{color: 'lightgray', marginBottom: 5}}>********</Text> }
                            <View style={{position: 'absolute', right: 0}}>
-                           {isLock ?  <Text><Ionicons name='eye-off' size={20} color='white' onPress={() => setIsLock(!isLock)} /></Text> : <Text><Ionicons name='eye' size={20} color='white' onPress={() => setIsLock(!isLock)} /></Text> }
+                           {isLock ?  <Text><Ionicons name='eye-off' size={20} color='white' onPress={!isLock ? authPassword : isLockFunction} /></Text> : <Text><Ionicons name='eye' size={20} color='white' onPress={!isLock ? authPassword : isLockFunction} /></Text> }
                            </View>
                         </View>
                     </View>

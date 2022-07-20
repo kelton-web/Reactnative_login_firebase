@@ -97,7 +97,7 @@ const ModalUpdate: React.FC<modalType>= ({Key, lastname, mail, password, firstna
             </View>
             <View style={styles.smallcontainerInput}>
             <Controller control={control} name="password" render={({field: {onChange, value, onBlur}, fieldState: {error}}) => (
-                <InputAll value={value} placeholder={password} type="password" onChangeText={onChange} error={!!error} errorDetails={error?.message} onBlur={onBlur}/>
+                <InputAll value={value} placeholder={"**********"} type="password" onChangeText={onChange} error={!!error} errorDetails={error?.message} onBlur={onBlur}/>
             )} />
             </View>
             <Pressable

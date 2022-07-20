@@ -38,6 +38,9 @@ const [userData, setUserData] = useState<datafirestoreType[]>([]);
 const LookFacebook = () => {
   navigation.push('AddInfo');
 };
+const HandleGalerie = () => {
+  navigation.push('Galeries');
+};
 const user = auth().currentUser?.uid;
 const userMail = auth().currentUser?.email;
 
@@ -105,6 +108,7 @@ useEffect(() => {
 
 
 
+
 const _renderItemAll = ({item}: {item: datafirestoreType}) => {
   return (
     <View>
@@ -140,6 +144,9 @@ const _renderItemAll = ({item}: {item: datafirestoreType}) => {
                   </View>
                   <View style={styles.btnStyle}>
                     <ButtonSubmit onPress={() => LookFacebook()} title="Add Info" style={styles.buttonStyle} textStyle={styles.textStyle}/>
+                  </View>
+                  <View style={styles.btnStyle}>
+                    <ButtonSubmit onPress={() => HandleGalerie()} title="Galerie" style={styles.buttonStyle} textStyle={styles.textStyle}/>
                   </View>
               </View>
             </View>

@@ -1,5 +1,5 @@
 import  * as React from 'react';
-import { ImageBackground, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { ImageBackground, StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import * as Yup from 'yup';
 import { useForm, Controller } from 'react-hook-form';
@@ -13,7 +13,7 @@ import { NavigateParams } from "../types/Types";
 import { CreateUserBase, LoginUserBase } from '../firebase/Auth';
 import InputAll from '../components/_Shared/InputAll';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import ReactNativeBiometrics, { BiometryTypes } from 'react-native-biometrics'
 
 
@@ -266,8 +266,8 @@ React.useEffect(() => {
           </View>
           <View style={styles.submitButtonStyle}>
             <ButtonSubmit title="Inscription" onPress={submitButtonSignup} style={styles.buttonInscriptionStyle} textStyle={styles.textStyle} />
-              <TouchableOpacity style={{backgroundColor: "red", justifyContent: "center", paddingVertical: 10, width: "50%"}} onPress={() => rnBiometricsReact()}>
-                <Text>Empreinte</Text>
+              <TouchableOpacity style={{justifyContent: "flex-end", paddingVertical: 30, width: "100%", alignItems: "center"}} onPress={() => rnBiometricsReact()}>
+                <Text><Image source={require('../assets/touchid-.png')} style={styles.imageTouch} /></Text>
               </TouchableOpacity>
              {/*  <TouchableOpacity style={{backgroundColor: "red", justifyContent: "center", paddingVertical: 10, width: "50%"}} onPress={() => rnBiometricsdelete()}>
                 <Text>Empreinte delete</Text>
@@ -328,7 +328,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     left: 70,
-
+  },
+  imageTouch: {
+    width: 80,
+    height: 80,
   }
 })
 

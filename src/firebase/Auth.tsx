@@ -5,7 +5,7 @@ import { doc, setDoc } from "firebase/firestore";
 import firestore from '@react-native-firebase/firestore';
 import { NavigateParams, FormValuesSignUp } from '../types/Types';
 import * as React from 'react';
-import { AsyncStorage } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import ReactNativeBiometrics from 'react-native-biometrics';
 
 const user = auth().currentUser?.uid;
@@ -15,7 +15,7 @@ const user = auth().currentUser?.uid;
 
 /* ********* Create User SignUp ****************/
 
-const rnBiometrics = new ReactNativeBiometrics({ allowDeviceCredentials: true })
+const rnBiometrics = new ReactNativeBiometrics()
 
 export const CreateUserBase = (value: FormValuesSignUp, navigation: any) => {
     auth()
@@ -29,20 +29,21 @@ export const CreateUserBase = (value: FormValuesSignUp, navigation: any) => {
        
            AsyncStorage.setItem( 'UID123', JSON.stringify(UID123_object)),
            console.log(value.email)
-        navigation.navigate('Home', {email: value.email, password: value.password});
+            navigation.navigate('Home', {email: value.email, password: value.password});
 
         rnBiometrics.createKeys()
         .then((resultObject) => {
           const { publicKey } = resultObject
           console.log(publicKey)
+
+          let UID1234_object = {
+            name: value.email,
+            password: value.password,
+            publicKey: publicKey,
+          };
+          AsyncStorage.setItem( 'UID1234', JSON.stringify(UID1234_object)),
+          console.log(value.email, value.password, publicKey);
         })
-        let UID1234_object = {
-          name: value.email,
-          password: value.password,
-          publicKey: value.publicKey,
-        };
-        AsyncStorage.setItem( 'UID1234', JSON.stringify(UID1234_object)),
-        console.log(value.email, value.password, value.publicKey);
 
       })
       .catch(error => {
@@ -112,13 +113,39 @@ export const LoginUserBase = (value: FormValuesSignUp, navigation: any) => {
            console.log(value.email)
 
 
-           let UID1234_object = {
-            name: value.email,
-            password: value.password,
-            publicKey: value.publicKey,
-          };
-          AsyncStorage.setItem( 'UID1234', JSON.stringify(UID1234_object)),
-          console.log(value.email, value.password, value.publicKey);
+           rnBiometrics.biometricKeysExist()
+           .then((resultObject) => {
+             const { keysExist } = resultObject
+             console.log("resultObject", resultObject)
+     
+             if (keysExist) {
+               console.log('Keys exist')
+               let UID1234_object = {
+                name: value.email,
+                password: value.password,
+              };
+              AsyncStorage.setItem( 'UID1234', JSON.stringify(UID1234_object)),
+              console.log(value.email, value.password);
+               
+             } else {
+              rnBiometrics.createKeys()
+                .then((resultObject) => {
+                const { publicKey } = resultObject
+                console.log(publicKey)
+
+                let UID1234_object = {
+                  name: value.email,
+                  password: value.password,
+                  publicKey: publicKey,
+                };
+                AsyncStorage.setItem( 'UID1234', JSON.stringify(UID1234_object)),
+                console.log(value.email, value.password, publicKey);
+              })
+
+              
+               console.log('Keys do not exist or were deleted')
+             }
+           })
       })
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {
@@ -136,8 +163,6 @@ export const LoginUserBase = (value: FormValuesSignUp, navigation: any) => {
 
         console.error(error);
       });
-
-
     }
     
     

@@ -5,6 +5,7 @@ export type NavigateParams = {
         email: string,
     },
     SignUp: undefined,
+    Galeries: undefined,
     ForgotPassword: undefined,
     AddInfo: undefined,
     ModalUpdate: undefined,

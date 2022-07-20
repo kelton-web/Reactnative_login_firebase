@@ -1,7 +1,7 @@
 import { StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { useState } from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import ReactNativeBiometrics from 'react-native-biometrics'
 interface InputType {
     value: string,
     placeholder: string,
@@ -17,6 +17,24 @@ const [isVisible, SetIsVisible] = useState<boolean>(type !== "password")
       const isVisibleFunction = () => {
         SetIsVisible(!isVisible)
       }
+
+    const rnBiometrics = new ReactNativeBiometrics()
+
+  const authPassword = () => {
+      rnBiometrics.simplePrompt({promptMessage: 'Confirm fingerprint'})
+        .then((resultObject) => {
+          const { success } = resultObject
+          if (success) {
+            isVisibleFunction()
+            console.log('successful biometrics provided')
+          } else {
+            console.log('user cancelled biometric prompt')
+          }
+        })
+        .catch(() => {
+          console.log('biometrics failed')
+      })
+  }
 
   return (
     <View style={styles.container}>
@@ -48,10 +66,10 @@ const [isVisible, SetIsVisible] = useState<boolean>(type !== "password")
       />
       {!!errorDetails && (
         <Text style={{color: 'red', textAlign: 'center'}}>{errorDetails}</Text>
-      ) }
+      )}
      {type === "password" &&
             <View style={{position: 'absolute',right: 50, top: 10}}>
-               {isVisible ? <Text><Ionicons name='eye-off' size={28} color='green' onPress={isVisibleFunction} /></Text> : <Text><Ionicons name='eye' size={29} color='green' onPress={isVisibleFunction} /></Text>}
+               {isVisible ? <Text><Ionicons name='eye-off' size={28} color='green' onPress={!isVisible ? authPassword : isVisibleFunction} /></Text> : <Text><Ionicons name='eye' size={29} color='green' onPress={!isVisible ? authPassword : isVisibleFunction} /></Text>}
             </View>
       }
     </View>
