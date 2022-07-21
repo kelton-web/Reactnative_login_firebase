@@ -1,29 +1,23 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Button, TouchableOpacity, Text } from 'react-native';
 
 import { utils } from '@react-native-firebase/app';
 import storage from '@react-native-firebase/storage';
-import { PermissionsAndroid, Platform } from "react-native";
-import CameraRoll from "@react-native-community/cameraroll";
-import useState from 'react';
+import ImagePicker from 'react-native-image-crop-picker';
 
 
 export const Galeries = () => {
   //const [upload, setUpload] = React.useState<any>('');
 
    const handleSubmitPicture = () => {
-    console.log("hello");
+      ImagePicker.openPicker({
+        width: 300,
+        height: 400,
+        cropping: true
+      }).then(image => {
+        console.log(image);
+      });
     
-   /*  CameraRoll.getPhotos({
-        first: 20,
-        assetType: 'Photos',
-      })
-      .then(r => {
-        setUpload(r);
-      })
-      .catch((err) => {
-         //Error Loading Images
-      }); */
     };  
 
    

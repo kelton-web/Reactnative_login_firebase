@@ -22,6 +22,8 @@ target 'ex_16_login_firebase' do
 
   pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-async-storage/async-storage'
 
+  pod 'RNImageCropPicker', :path => '../node_modules/react-native-image-crop-picker'
+
   target 'ex_16_login_firebaseTests' do
     inherit! :complete
     # Pods for testing

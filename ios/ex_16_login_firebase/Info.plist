@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>we need to access to microphone</string>
+	<key>NSCameraUsageDescription</key>
+	<string>we need to access to camera</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>we need to access to image</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -63,26 +69,23 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>UIAppFonts</key>
-
-<array>
-	<string>AntDesign.ttf</string>
-	<string>Entypo.ttf</string>
-	<string>EvilIcons.ttf</string>
-	<string>Feather.ttf</string>
-	<string>FontAwesome.ttf</string>
-	<string>FontAwesome5_Brands.ttf</string>
-	<string>FontAwesome5_Regular.ttf</string>
-	<string>FontAwesome5_Solid.ttf</string>
-	<string>Foundation.ttf</string>
-	<string>Ionicons.ttf</string>
-	<string>MaterialIcons.ttf</string>
-	<string>MaterialCommunityIcons.ttf</string>
-	<string>SimpleLineIcons.ttf</string>
-	<string>Octicons.ttf</string>
-	<string>Zocial.ttf</string>
-	<string>Fontisco.ttf</string>
-
-</array>
-	
+	<array>
+		<string>AntDesign.ttf</string>
+		<string>Entypo.ttf</string>
+		<string>EvilIcons.ttf</string>
+		<string>Feather.ttf</string>
+		<string>FontAwesome.ttf</string>
+		<string>FontAwesome5_Brands.ttf</string>
+		<string>FontAwesome5_Regular.ttf</string>
+		<string>FontAwesome5_Solid.ttf</string>
+		<string>Foundation.ttf</string>
+		<string>Ionicons.ttf</string>
+		<string>MaterialIcons.ttf</string>
+		<string>MaterialCommunityIcons.ttf</string>
+		<string>SimpleLineIcons.ttf</string>
+		<string>Octicons.ttf</string>
+		<string>Zocial.ttf</string>
+		<string>Fontisco.ttf</string>
+	</array>
 </dict>
 </plist>
