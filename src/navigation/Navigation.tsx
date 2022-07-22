@@ -24,8 +24,7 @@ const Navigation = () => {
             <Stack.Screen name="ModalUpdate" component={ModalUpdate} options={{ title: 'Modifier les informations' }}/>
             <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
             <Stack.Screen name="AddInfo" component={AddInfo} options={{ title: 'Ajouter une informations' }}/>
-            <Stack.Screen name="Galeries" component={Galeries}     options={{ presentation: 'modal' }}
-/>
+            <Stack.Screen name="Galeries" component={Galeries} />
             <Stack.Screen name="SendEmailForgotPassword" component={SendEmailForgotPassword} options={{ title: 'Mot de passe oublié' }}/>
         </Stack.Navigator>
     </NavigationContainer>
