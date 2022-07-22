@@ -5,6 +5,8 @@ import { utils } from '@react-native-firebase/app';
 import storage, { FirebaseStorageTypes } from '@react-native-firebase/storage';
 import ImagePicker from 'react-native-image-crop-picker';
 import ButtonSubmit from '../components/_Shared/ButtonSubmit';
+import auth from '@react-native-firebase/auth';
+
 
 
 
@@ -15,24 +17,30 @@ export const Galeries = () => {
   const [isVisible, setIsVisible] = useState<any>(false);
   const [isImport, setIsImport] = useState<any>(true);
 
-  const urlArray: string[] = [];
+  const userUid = auth().currentUser?.uid;
+  const urlArray: any[] = [];
   
   function listFilesAndDirectories(reference: FirebaseStorageTypes.Reference): any {
     return reference.list().then((result: { items: any[]; }) => {
-      
+
       result.items.forEach(async (ref: { fullPath: any; }) => {
-       const url = await storage().ref(ref.fullPath).getDownloadURL();
-      urlArray.push(url);
-      setAllImages(urlArray);
+        console.log(ref.fullPath);
+        
+       storage().ref(ref.fullPath).getDownloadURL().then((downloadURL) => {
+         urlArray.push(downloadURL);
+         console.log("url",downloadURL);
+
+         setAllImages(urlArray);
+       })
+      
     });
   });
 }
 
-const reference = storage().ref('images');
+const reference = storage().ref(`${userUid}/images`);
 useEffect(() => {
   listFilesAndDirectories(reference).then(() => {
     console.log('Finished listing');
-    
     });
 },[upload])
 
@@ -50,7 +58,7 @@ useEffect(() => {
         let imgName = image.path.substring(image.path.lastIndexOf('/') + 1);
         console.log(imgName);
         
-        const reference = storage().ref("images/" + imgName);
+        const reference = storage().ref(`${userUid}/images/${imgName}`);
         const task = reference.putFile(image.path);
         setUpload(image.path);          
         try {
@@ -63,7 +71,7 @@ useEffect(() => {
           task.then( async () => {
             console.log('Image uploaded to the bucket!');
             const mDownloadUrl = storage()
-             .ref('images/' + imgName)
+             .ref(`${userUid}/images/${imgName}`)
             
            });
           }
@@ -85,7 +93,7 @@ useEffect(() => {
         let imgName = image.path.substring(image.path.lastIndexOf('/') + 1);
         console.log(imgName);
         
-        const reference = storage().ref("images/" + imgName);
+        const reference = storage().ref(`${userUid}/images/${imgName}`);
         const task = reference.putFile(image.path);
         setUpload(image.path);
         try {
@@ -119,9 +127,16 @@ useEffect(() => {
       console.log('Image Upload URL : ', allImages);
     } */
 
+    const lookDelete = (item: any) => {
+      console.log(item);
+     
+
+    }
     const renderItem = ({item} :  {item:string}) => {
       return (
-              <Image source={{uri: item}} style={{width:100,height : 100, margin: 3}}/>
+        <TouchableOpacity onPress={() => lookDelete(item)}>
+          <Image source={{uri: item}} style={{width:100,height : 100, margin: 3}}/>
+        </TouchableOpacity>
       )
     }
    
@@ -147,6 +162,7 @@ const HandleStateInverse = () => {
             data={allImages}
             renderItem={renderItem}
             numColumns={3}
+            keyExtractor={(item: any) => item}
           />
       {isVisible &&(
 
