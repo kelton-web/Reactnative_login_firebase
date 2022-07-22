@@ -145,7 +145,7 @@ const _renderItemAll = ({item}: {item: datafirestoreType}) => {
                   <View style={styles.btnStyle}>
                     <ButtonSubmit onPress={() => LookFacebook()} title="Add Info" style={styles.buttonStyle} textStyle={styles.textStyle}/>
                   </View>
-                  <View style={styles.btnStyle}>
+                  <View style={styles.btnStyleOne}>
                     <ButtonSubmit onPress={() => HandleGalerie()} title="Galerie" style={styles.buttonStyle} textStyle={styles.textStyle}/>
                   </View>
               </View>
@@ -199,7 +199,11 @@ const styles = StyleSheet.create({
     height: "80%",
   },
   btnStyle: {
-    top: 20
+    top: 4
+  },
+  btnStyleOne: {
+    top: 10,
+    marginBottom: 40
   },
   containerAlien: {
     width: "100%",
