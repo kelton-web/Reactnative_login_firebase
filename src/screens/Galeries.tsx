@@ -16,6 +16,8 @@ export const Galeries = () => {
   const [allImages, setAllImages] = useState<string[]>([]);
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const [isImport, setIsImport] = useState<boolean>(true);
+  const [isZoom, setIsZoom] = useState<boolean>(false);
+  const [valueZoom, setValueZoom] = useState<any>(null);
 
   const userUid = auth().currentUser?.uid;
   const urlArray: string[] = [];
@@ -118,8 +120,7 @@ useEffect(() => {
       HandleStateInverse();
 
     };  
-    const [isZoom, setIsZoom] = useState<boolean>(false);
-    const [valueZoom, setValueZoom] = useState<any>(null);
+
 
 
     const lookDelete = (item: string) => {
@@ -158,6 +159,9 @@ const SupprimeZoom = () => {
         console.log(newArray);
         setIsZoom(false);
         setIsImport(true)
+        listFilesAndDirectories(reference).then(() => {
+          console.log('Finished listing');
+          });
       }).catch((error) => {
         console.log("      Uh-oh, an error occurred!     ");
       }); 
