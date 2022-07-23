@@ -113,12 +113,12 @@ const _renderItemAll = ({item}: {item: datafirestoreType}) => {
   return (
     <View>
       <ListItem 
-      firstname={item.firstname}
-      lastname={item.lastname}
-      mail={item.mail}
-      password={item.password}
-      Key={item.key}
-      onPress={(key) => DeleteInfo(key)}
+        firstname={item.firstname}
+        lastname={item.lastname}
+        mail={item.mail}
+        password={item.password}
+        Key={item.key}
+        onPress={(key) => DeleteInfo(key)}
       />
     </View>
   )

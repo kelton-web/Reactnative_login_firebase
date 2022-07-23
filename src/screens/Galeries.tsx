@@ -126,13 +126,6 @@ useEffect(() => {
       setValueZoom(item);
       setIsZoom(true);
       setIsImport(false)
-      console.log(item);
-      let Name = item.substring(114, 154);
-      console.log(Name);
-
-  
-    
-
     }
     const renderItem = ({item} :  {item:string}) => {
       return (
@@ -155,9 +148,6 @@ const AnnuleZoom = () => {
   setIsImport(true)
 }
 const SupprimeZoom = () => {
-  setIsZoom(false);
-  setIsImport(true)
-
   let Name = valueZoom.substring(114, 154);
       console.log(valueZoom);
      storage().ref(`${userUid}/images/${Name}`).delete().then(() => {
@@ -165,7 +155,9 @@ const SupprimeZoom = () => {
        const newArray = allImages;
         const index = newArray.indexOf(Name);
         newArray.splice(index, 1);
-        console.log(newArray); 
+        console.log(newArray);
+        setIsZoom(false);
+        setIsImport(true)
       }).catch((error) => {
         console.log("      Uh-oh, an error occurred!     ");
       }); 
