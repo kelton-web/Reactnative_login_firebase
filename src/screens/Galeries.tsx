@@ -118,22 +118,19 @@ useEffect(() => {
       HandleStateInverse();
 
     };  
+    const [isZoom, setIsZoom] = useState<boolean>(false);
+    const [valueZoom, setValueZoom] = useState<any>(null);
 
 
     const lookDelete = (item: string) => {
+      setValueZoom(item);
+      setIsZoom(true);
+      setIsImport(false)
       console.log(item);
       let Name = item.substring(114, 154);
       console.log(Name);
 
-    storage().ref(`${userUid}/images/${Name}`).delete().then(() => {
-     console.log("      File deleted successfully ");
-     /* const newArray = allImages;
-      const index = newArray.indexOf(item);
-      newArray.splice(index, 1);
-      console.log(newArray); */
-    }).catch((error) => {
-      console.log("      Uh-oh, an error occurred!     ");
-    });
+  
     
 
     }
@@ -153,6 +150,26 @@ const HandleStateInverse = () => {
   setIsVisible(false);
   setIsImport(true)
 }
+const AnnuleZoom = () => {
+  setIsZoom(false);
+  setIsImport(true)
+}
+const SupprimeZoom = () => {
+  setIsZoom(false);
+  setIsImport(true)
+
+  let Name = valueZoom.substring(114, 154);
+      console.log(valueZoom);
+     storage().ref(`${userUid}/images/${Name}`).delete().then(() => {
+      console.log("      File deleted successfully ");
+       const newArray = allImages;
+        const index = newArray.indexOf(Name);
+        newArray.splice(index, 1);
+        console.log(newArray); 
+      }).catch((error) => {
+        console.log("      Uh-oh, an error occurred!     ");
+      }); 
+}
 
 
 
@@ -169,6 +186,18 @@ const HandleStateInverse = () => {
             numColumns={3}
             keyExtractor={(item: string) => item}
           />
+          {isZoom && 
+            (
+              <View style={styles.ViewPicture}>
+                <Image source={{uri: valueZoom}} style={{width: "100%",height : "100%", margin: 3}}/>
+                <View style={{width: "100%",flexDirection: "row", justifyContent: "space-around"}}>
+                  <ButtonSubmit title="Annuler" onPress={AnnuleZoom} style={styles.buttonStyleOne} textStyle={styles.textStyle} />
+                  <ButtonSubmit title="Supprimer" onPress={SupprimeZoom} style={styles.buttonStyleTwo} textStyle={styles.textStyle} />
+                </View>
+              </View>
+            )
+
+          }
       {isVisible &&(
 
       <View style={styles.containerImport}>
@@ -215,6 +244,26 @@ const styles = StyleSheet.create({
     marginTop: "3%",
 
   },
+  buttonStyleTwo: {
+    height: 50,
+    width: 150,
+    backgroundColor: "red",
+    borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: "3%",
+  },
+  buttonStyleOne: {
+    height: 50,
+    width: 150,
+    backgroundColor: "white",
+    borderWidth: 1,
+    borderRadius: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: "3%",
+
+  },
   textStyle: {
       fontSize: 20
   },
@@ -223,5 +272,13 @@ const styles = StyleSheet.create({
     width: "100%",
     textAlign: "center",
     paddingTop: "8%",
+  },
+  ViewPicture: {
+    position: "absolute",
+    top: 0,
+    width: "100%",
+    height: "90%",
+    justifyContent: "center",
+    alignItems: "center",
   }
   });

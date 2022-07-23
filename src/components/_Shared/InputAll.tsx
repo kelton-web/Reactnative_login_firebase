@@ -42,35 +42,22 @@ const [isVisible, SetIsVisible] = useState<boolean>(type !== "password")
         {...props}
         keyboardType={type === "email" ? "email-address" : "default"}
         secureTextEntry={!isVisible}
-        style={error ? {
-          borderWidth: 1,
-          backgroundColor: '#FFFFFF',
-          borderColor: 'red',
-          height: 50,
-          width: '80%',
-          paddingHorizontal: 20,
-          position: 'relative',
-          paddingRight: type === "password" ?  44 : 5,
-          borderRadius: 7
-        } : {
-            borderWidth: 1,
-            backgroundColor: '#FFFFFF',
-            borderColor: 'gray',
-            position: 'relative',
-            paddingRight: type === "password" ?  44 : 5,
-            height: 50,
-            width: '80%',
-            paddingHorizontal: 20,
-            borderRadius: 7
-          }}
+        placeholderTextColor="gray"
+        style={error ? [styles.inputStyleSimple, {paddingRight: type === "password" ?  44 : 5}] : 
+           [styles.inputStyleSimple, { paddingRight: type === "password" ?  44 : 5}]
+          }
       />
-      {!!errorDetails && (
-        <Text style={{color: 'red', textAlign: 'center'}}>{errorDetails}</Text>
-      )}
-     {type === "password" &&
-            <View style={{position: 'absolute',right: 50, top: 10}}>
-               {isVisible ? <Text><Ionicons name='eye-off' size={28} color='green' onPress={!isVisible ? authPassword : isVisibleFunction} /></Text> : <Text><Ionicons name='eye' size={29} color='green' onPress={!isVisible ? authPassword : isVisibleFunction} /></Text>}
-            </View>
+      {
+        !!errorDetails && 
+        (
+          <Text style={{color: 'red', textAlign: 'center'}}>{errorDetails}</Text>
+        )
+      }
+     {
+      type === "password" &&
+        <View style={{position: 'absolute',right: 50, top: 10}}>
+            {isVisible ? <Text><Ionicons name='eye-off' size={28} color='green' onPress={!isVisible ? authPassword : isVisibleFunction} /></Text> : <Text><Ionicons name='eye' size={29} color='green' onPress={!isVisible ? authPassword : isVisibleFunction} /></Text>}
+        </View>
       }
     </View>
   )
@@ -84,12 +71,26 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  /* inputStyle: {
+   inputStyleSimple: {
     borderWidth: 1,
     backgroundColor: '#FFFFFF',
+    borderColor: 'gray',
+    position: 'relative',
+   // paddingRight: type === "password" ?  44 : 5,
     height: 50,
     width: '80%',
-    padding: 20,
+    paddingHorizontal: 20,
     borderRadius: 7
-  } */
+  },
+   inputStyleError: {
+    borderWidth: 1,
+    backgroundColor: '#FFFFFF',
+    borderColor: 'red',
+    height: 50,
+    width: '80%',
+    paddingHorizontal: 20,
+    position: 'relative',
+    //paddingRight: type === "password" ?  44 : 5,
+    borderRadius: 7
+  } 
 })
