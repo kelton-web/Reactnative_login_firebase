@@ -12,27 +12,27 @@ import auth from '@react-native-firebase/auth';
 
 export const Galeries = () => {
   const [upload, setUpload] = React.useState<any>(null);
-  const [percentage, setpercentage] = React.useState<any>(0);
-  const [allImages, setAllImages] = useState<any[]>([]);
-  const [isVisible, setIsVisible] = useState<any>(false);
-  const [isImport, setIsImport] = useState<any>(true);
+  const [percentage, setpercentage] = React.useState<number>(0);
+  const [allImages, setAllImages] = useState<string[]>([]);
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+  const [isImport, setIsImport] = useState<boolean>(true);
 
   const userUid = auth().currentUser?.uid;
-  const urlArray: any[] = [];
+  const urlArray: string[] = [];
   
   function listFilesAndDirectories(reference: FirebaseStorageTypes.Reference): any {
     return reference.list().then((result: { items: any[]; }) => {
 
-      result.items.forEach(async (ref: { fullPath: any; }) => {
+      result.items.forEach(async (ref: { fullPath: string; }) => {
         console.log(ref.fullPath);
         
        storage().ref(ref.fullPath).getDownloadURL().then((downloadURL) => {
          urlArray.push(downloadURL);
          console.log("url",downloadURL);
 
+         
          setAllImages(urlArray);
        })
-      
     });
   });
 }
@@ -102,6 +102,7 @@ useEffect(() => {
             console.log(`${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`);
             setpercentage(Math.round((taskSnapshot.bytesTransferred / taskSnapshot.totalBytes) * 100))
           });
+        
 
           task.then( async () => {
             console.log('Image uploaded to the bucket!');
@@ -118,18 +119,22 @@ useEffect(() => {
 
     };  
 
-/*     const getUploadImages = async () => {
-      //const url = await storage().ref('images/').getDownloadURL();
-      const urlArray: any[] = [];
-      urlArray.push(url);
-      setImages([...urlArray]);
-      console.log('Image Upload URL : ', url);
-      console.log('Image Upload URL : ', allImages);
-    } */
 
-    const lookDelete = (item: any) => {
+    const lookDelete = (item: string) => {
       console.log(item);
-     
+      let Name = item.substring(114, 154);
+      console.log(Name);
+
+    storage().ref(`${userUid}/images/${Name}`).delete().then(() => {
+     console.log("      File deleted successfully ");
+     /* const newArray = allImages;
+      const index = newArray.indexOf(item);
+      newArray.splice(index, 1);
+      console.log(newArray); */
+    }).catch((error) => {
+      console.log("      Uh-oh, an error occurred!     ");
+    });
+    
 
     }
     const renderItem = ({item} :  {item:string}) => {
@@ -162,7 +167,7 @@ const HandleStateInverse = () => {
             data={allImages}
             renderItem={renderItem}
             numColumns={3}
-            keyExtractor={(item: any) => item}
+            keyExtractor={(item: string) => item}
           />
       {isVisible &&(
 
